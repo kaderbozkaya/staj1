@@ -23,7 +23,7 @@ function App() {
     //---------------SİLME İÇİN GEREKLİ FONKSİYON----------------
     const itemSil=(id)=> {
       const yeniDizi=todoDizi.filter(item=>item.id !==id)  /*todoDizi silme işlemi için kullanılıyor, filter ile dizi filtreleniyor seçtiğim id'yi kontrol ediyor silmek için filtreliyor eşleşmeyen todo'lar yeniDiziye atanıyor kalan yani seçilen todoDizi'de kalıyor ve siliniyor */
-      
+
       setTodoDizi(yeniDizi) //güncel diziyi set ediyoruz
     }
 
@@ -46,10 +46,10 @@ function App() {
                 Ekle
             </button>
             <div>
-                <ul className='bg-blue-600 m-7 p-5 rounded'>
+                <ul className='bg-blue-600 m-7 p-5 rounded break-words  '>
                     {todoDizi.map((item) => (
-                        <li key={item.id} className='text-white flex items-center justify-center m-3 border-2 rounded'>
-                            <p>{item.item}</p>
+                        <li key={item.id} className='text-white flex items-center justify-center m-3 border-2 rounded' >
+                            <p className='break-all'>{item.item}</p>
                             <span className='flex justify-between p-3'>
                                 <FaTrashAlt className='cursor-pointer'
                                 onClick={()=>itemSil(item.id)}/>
