@@ -1,14 +1,17 @@
 import React, { useState } from "react";
 import { FaTrashAlt } from "react-icons/fa";
-import { MdEdit, MdDone } from "react-icons/md";
+import { MdEdit } from "react-icons/md";
 import { v4 as uuidv4 } from "uuid"; //id değerleri için npm uuid'den indirilen paket
+import { ImSad } from "react-icons/im";
+import { HiOutlineEmojiHappy } from "react-icons/hi";
+
 import "./App.css";
 
 function App() {
   const [deger, setDeger] = useState("");
   const [todoDizi, setTodoDizi] = useState([]);
   const [duzenlemeModu, setDuzenlemeModu] = useState(false); //düzenleme işlemi yaplıp yapılmadığını belirlemek için(ekle butonunu düzenleme veya ekle olarak değiştirmek için)
-  const [duzenlenenItem, setDuzenlenenItem] = useState(null); //düzenlenen todo'nun id'sini tutmak için
+  const [duzenlenenItem, setDuzenlenenItem] = useState(); //düzenlenen todo'nun id'sini tutmak için
 
   const ekle = () => {
     if (deger.trim() !== "") {
@@ -21,12 +24,13 @@ function App() {
           )
         ); //todoDizi listesindeki todoları günceller düzenlenen todoyu yeni değerle değiştirir
         setDuzenlemeModu(false); //işlem bitinde düzenleme modu false yapılır
-        setDuzenlenenItem(null);
+        setDuzenlenenItem();
         //düzenleme modu false ise ekleme işlemi için ekle butonu aktiftir
       } else {
         const yeniEklenen = {
           id: uuidv4(),
           item: deger,
+          durum: "Aktif",
         };
         setTodoDizi([...todoDizi, yeniEklenen]);
       }
@@ -48,41 +52,70 @@ function App() {
     setDuzenlemeModu(true);
     setDuzenlenenItem(id);
   };
+  const itemDurum = (id) => {
+    let durum =
+      todoDizi.filter((item) => item.id === id)[0].durum === "Aktif" //seçtiğim todo dizinin 0. yani ilk elemanı aktifse tamamlandı olarak değitiriyorum değilse aktif olarak değiştiriyorum
+        ? "Tamamlandı"
+        : "Aktif";
+    setTodoDizi((item) =>
+      item.map((item) => (item.id === id ? { ...item, durum } : item))
+    );
+  };
 
   return (
     <>
-      <h1 className="text-3xl text-blue-500">TODO LIST</h1>
+      <h1 className="text-4xl text-white">TODO LIST</h1>
       <input
         type="text"
         placeholder="Todo ekle..."
         value={deger}
+        size={40}
         onChange={(e) => setDeger(e.target.value)}
         className="border-2 p-2 outline-none rounded"
       />
       <button
         onClick={ekle}
-        className="bg-blue-400 text-white text-lg m-3 p-2 rounded"
+        className="bg-blue-400 text-white text-xl m-3 p-2 rounded"
       >
         {duzenlemeModu ? "Güncelle" : "Ekle"}
       </button>
       <div>
-        <ul className="bg-blue-600 m-7 p-5 rounded break-words  ">
+        <ul className="m-7 p-5 rounded break-words ">
           {todoDizi.map((item) => (
             <li
               key={item.id}
-              className="text-white flex items-center justify-center m-3 border-2 rounded"
+              className={`text-white flex items-center justify-between m-3 border-2 rounded ${
+                item.durum === "Tamamlandı" ? "bg-green-800" : ""
+              }`}
             >
-              <p className="break-all">{item.item}</p>
-              <span className="flex justify-between p-3">
+              <p
+                className={`break-all m-3 ${
+                  item.durum === "Tamamlandı" ? "line-through" : ""
+                }`}
+              >
+                {item.item}
+              </p>
+              <span className="flex justify-between p-3 m-3">
                 <FaTrashAlt
-                  className="cursor-pointer"
+                  className="cursor-pointer text-2xl "
                   onClick={() => itemSil(item.id)}
                 />
                 <MdEdit
-                  className="cursor-pointer "
+                  className="cursor-pointer text-2xl ml-1"
                   onClick={() => itemDuzenle(item.id)}
                 />
-                <MdDone className="cursor-pointer " />
+                {item.durum === "Aktif" && (
+                  <ImSad
+                    className="cursor-pointer text-2xl ml-1"
+                    onClick={() => itemDurum(item.id)}
+                  />
+                )}
+                {item.durum === "Tamamlandı" && (
+                  <HiOutlineEmojiHappy
+                    className="cursor-pointer text-2xl ml-1"
+                    onClick={() => itemDurum(item.id)}
+                  />
+                )}
               </span>
             </li>
           ))}
