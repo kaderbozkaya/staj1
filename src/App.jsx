@@ -81,11 +81,11 @@ function App() {
           value={value}
           onChange={(e) => setValue(e.target.value)}
           onKeyDown={handleKeyPress}
-          className="border-2  p-2 outline-none rounded-2xl w-44 md:w-80 h-8 md:h-12 text-xl md:text-3xl text-gray-600"
+          className="border-2 p-4 outline-none rounded-2xl w-44 md:w-80 h-8 md:h-12 text-lg md:text-2xl text-gray-600"
         />
         <button
           onClick={add}
-          className="bg-blue-400 text-white text-lg md:text-2xl m-2 p-2 rounded-2xl w-20 md:w-28 h-8 md:h-12 hover:bg-blue-500 flex items-center justify-center"
+          className="bg-blue-300 text-white text-lg md:text-2xl m-2 p-4 rounded-2xl w-20 md:w-28 h-9 md:h-12 hover:bg-blue-400 flex items-center justify-center"
         >
           {editMode ? "Update" : "Add"}
         </button>
@@ -95,12 +95,12 @@ function App() {
           {todoArray.map((item) => (
             <li
               key={item.id}
-              className={`text-white flex items-center justify-between m-1  border-2 rounded w-[315px] md:w-[700px]  ${
-                item.status === "Resolved" ? "bg-green-800" : ""
+              className={`text-white flex items-center justify-between m-1  border-2 rounded-xl w-[315px] md:w-[700px]  ${
+                item.status === "Resolved" ? "bg-green-400" : ""
               }`}
             >
               <p
-                className={`break-all m-1 text-sm md:text-2xl ${
+                className={`break-all m-1 text-lg md:text-3xl ${
                   item.status === "Resolved" ? "line-through" : ""
                 }`}
               >
@@ -108,23 +108,23 @@ function App() {
               </p>
               <span className="flex justify-between p-1 m-1">
                 <FaTrashAlt
-                  className="cursor-pointer text-sm md:text-2xl"
+                  className="cursor-pointer text-lg md:text-3xl"
                   onClick={() => deleteItem(item.id)}
                 />
                 <MdEdit
-                  className="cursor-pointer text-sm md:text-2xl ml-1"
+                  className="cursor-pointer text-lg md:text-3xl ml-1"
                   onClick={() => editItem(item.id)}
                 />
 
                 {item.status === "Active" && (
                   <FaRegSquare
-                    className="cursor-pointer text-sm md:text-2xl ml-1"
+                    className="cursor-pointer text-lg md:text-3xl ml-1"
                     onClick={() => itemstatus(item.id)}
                   />
                 )}
                 {item.status === "Resolved" && (
                   <FaRegSquareCheck
-                    className="cursor-pointer text-sm md:text-2xl ml-1"
+                    className="cursor-pointer text-lg md:text-3xl ml-1"
                     onClick={() => itemstatus(item.id)}
                   />
                 )}
