@@ -36,7 +36,7 @@ function App() {
         ); //todoArray listesindeki todoları günceller düzenlenen todoyu yeni değerle değiştirir
         setEditMode(false); //işlem bitinde düzenleme modu false yapılır
         setEditItemId();
-        toast.success("Görevin güncellendi", {
+        toast.success("Updated your task!", {
           position: "top-right",
           autoClose: 2000,
           hideProgressBar: false,
@@ -55,7 +55,7 @@ function App() {
           backgroundColor: randomTodoColor(),
         };
         setTodoArray([...todoArray, newItem]);
-        toast.info("Yeni görevin eklendi", {
+        toast.info("New task added!", {
           position: "top-right",
           autoClose: 2000,
           hideProgressBar: false,
@@ -68,7 +68,7 @@ function App() {
       }
       setValue(""); //değer eklendikten sonra inputun içini boşaltıyoruz
     } else if (value === "") {
-      toast.error("Değer eklemediniz!", {
+      toast.error("You did not add value!", {
         position: "top-right",
         autoClose: 2000,
         hideProgressBar: false,
@@ -91,7 +91,7 @@ function App() {
     const newArr = todoArray.filter(
       (item) => item.id !== id
     ); /*todoArray silme işlemi için kullanılıyor, filter ile Array filtreleniyor seçtiğim id'yi kontrol ediyor silmek için filtreliyor eşleşmeyen todo'lar newArrye atanıyor kalan yani seçilen todoArray'de kalıyor ve siliniyor */
-    toast.success("Görevin Silindi", {
+    toast.success("Your task deleted!", {
       position: "top-right",
       autoClose: 2000,
       hideProgressBar: false,
@@ -121,7 +121,7 @@ function App() {
       item.map((item) => (item.id === id ? { ...item, status } : item))
     );
     if (status === "Resolved") {
-      toast.success("Tamamlandı", {
+      toast.success("Your task is completed!", {
         position: "top-right",
         autoClose: 2000,
         hideProgressBar: false,
@@ -132,7 +132,7 @@ function App() {
         theme: "colored",
       });
     } else {
-      toast.error("Tamamlanmadı", {
+      toast.error("Your task is not completed!", {
         position: "top-right",
         autoClose: 2000,
         hideProgressBar: false,
@@ -159,68 +159,72 @@ function App() {
         pauseOnHover
         theme="light"
       />
-      <h1 className="text-2xl md:text-4xl  text-white text-center m-3">
-        TODO LIST
-      </h1>
-      <div className="flex items-center justify-center">
-        <textarea
-          cols={40}
-          rows={1}
-          type="text"
-          placeholder="Add todo..."
-          value={value}
-          onChange={(e) => setValue(e.target.value)}
-          onKeyDown={handleKeyPress}
-          className="border-2 p-4 outline-none rounded-2xl  text-lg md:text-2xl text-gray-600"
-        />
-        <button
-          onClick={add}
-          className="bg-blue-300 text-white text-lg md:text-2xl m-2 p-4 rounded-2xl w-20 md:w-28 h-9 md:h-12 hover:bg-blue-400 flex items-center justify-center"
-        >
-          {editMode ? "Update" : "Add"}
-        </button>
-      </div>
-      <div className="flex items-center justify-center">
-        <ul className="m-5 p-3 rounded break-words flex flex-col items-center justify-center ">
-          {todoArray.map((item) => (
-            <li
-              key={item.id}
-              style={{ backgroundColor: item.backgroundColor }}
-              className={`text-white flex items-center justify-between m-1  border-2 rounded-xl w-[315px] md:w-[700px] `}
+      <div className="flex items-center justify-center m-5 ">
+        <div className="border border-cyan-900 rounded-2xl bg-slate-400 shadow-xl shadow-black">
+          <h1 className="text-2xl md:text-4xl  text-blue-600 text-center m-3 pt-4 ">
+            TODO LIST
+          </h1>
+          <div className="flex items-center justify-center">
+            <textarea
+              type="text"
+              placeholder="Add todo..."
+              value={value}
+              onChange={(e) => setValue(e.target.value)}
+              onKeyDown={handleKeyPress}
+              className="border-2 p-3 outline-none rounded-xl text-md md:text-2xl text-gray-600 m-3 resize-none w-56 h-12  md:w-80 md:h-20"
+            />
+            <button
+              onClick={add}
+              className="bg-blue-500 text-white text-lg md:text-2xl m-2 p-4 rounded-2xl w-12 md:w-28 h-12 md:h-20 hover:bg-blue-400 flex items-center justify-center"
             >
-              <p
-                className={`break-all m-1 text-lg md:text-3xl ${
-                  item.status === "Resolved" ? "line-through" : ""
-                }`}
-              >
-                {item.item}
-              </p>
-              <span className="flex justify-between p-1 m-1">
-                <FaTrashAlt
-                  className="cursor-pointer text-lg md:text-3xl"
-                  onClick={() => deleteItem(item.id)}
-                />
-                <MdEdit
-                  className="cursor-pointer text-lg md:text-3xl ml-1"
-                  onClick={() => editItem(item.id)}
-                />
+              {editMode ? "Update" : "Add"}
+            </button>
+          </div>
+          <div className="flex items-center justify-center">
+            <ul className="m-5 p-3 rounded break-words flex flex-col items-center justify-center ">
+              {todoArray.map((item) => (
+                <li
+                  key={item.id}
+                  style={{ backgroundColor: item.backgroundColor }}
+                  className={`text-gray-300 flex items-center justify-between m-1  border-2 rounded-xl w-[300px] md:w-[600px] pt-4`}
+                >
+                  <p
+                    className={`break-all m-1 text-lg md:text-3xl ${
+                      item.status === "Resolved" ? "line-through" : ""
+                    }`}
+                  >
+                    {item.item}
+                  </p>
+                  <span className="flex justify-between p-1 m-1">
+                    <FaTrashAlt
+                      className="cursor-pointer text-lg md:text-3xl"
+                      onClick={() => deleteItem(item.id)}
+                    />
+                    {item.status !== "Resolved" && (
+                      <MdEdit
+                        className="cursor-pointer text-lg md:text-3xl ml-1"
+                        onClick={() => editItem(item.id)}
+                      />
+                    )}
 
-                {item.status === "Active" && (
-                  <FaRegSquare
-                    className="cursor-pointer text-lg md:text-3xl ml-1"
-                    onClick={() => itemstatus(item.id)}
-                  />
-                )}
-                {item.status === "Resolved" && (
-                  <FaRegSquareCheck
-                    className="cursor-pointer text-lg md:text-3xl ml-1"
-                    onClick={() => itemstatus(item.id)}
-                  />
-                )}
-              </span>
-            </li>
-          ))}
-        </ul>
+                    {item.status === "Active" && (
+                      <FaRegSquare
+                        className="cursor-pointer text-lg md:text-3xl ml-1"
+                        onClick={() => itemstatus(item.id)}
+                      />
+                    )}
+                    {item.status === "Resolved" && (
+                      <FaRegSquareCheck
+                        className="cursor-pointer text-lg md:text-3xl ml-1"
+                        onClick={() => itemstatus(item.id)}
+                      />
+                    )}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
       </div>
     </>
   );

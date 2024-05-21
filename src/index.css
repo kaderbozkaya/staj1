@@ -2,6 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 body {
-    background: linear-gradient(to left,#20BF55,#01BAEF);
+background-color: rgb(162, 210, 210);
+    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif
    
 }
