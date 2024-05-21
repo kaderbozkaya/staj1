@@ -4,7 +4,9 @@ import { MdEdit } from "react-icons/md";
 import { v4 as uuidv4 } from "uuid"; //id değerleri için npm uuid'den indirilen paket
 import { FaRegSquare } from "react-icons/fa";
 import { FaRegSquareCheck } from "react-icons/fa6";
-
+//--toastify---
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
 
 function App() {
@@ -12,6 +14,15 @@ function App() {
   const [todoArray, setTodoArray] = useState([]);
   const [editMode, setEditMode] = useState(false); //düzenleme işlemi yaplıp yapılmadığını belirlemek için(add butonunu update veya add olarak değiştirmek için)
   const [editItemId, setEditItemId] = useState(); //düzenlenen todo'nun id'sini tutmak için
+
+  const randomTodoColor = () => {
+    const letters = "0123456789ABCDEF";
+    let color = "#";
+    for (let i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+  };
 
   const add = () => {
     if (value.trim() !== "") {
@@ -25,16 +36,48 @@ function App() {
         ); //todoArray listesindeki todoları günceller düzenlenen todoyu yeni değerle değiştirir
         setEditMode(false); //işlem bitinde düzenleme modu false yapılır
         setEditItemId();
+        toast.success("Görevin güncellendi", {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
         //düzenleme modu false ise ekleme işlemi için add butonu aktiftir
       } else {
         const newItem = {
           id: uuidv4(),
           item: value,
           status: "Active",
+          backgroundColor: randomTodoColor(),
         };
         setTodoArray([...todoArray, newItem]);
+        toast.info("Yeni görevin eklendi", {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
       }
       setValue(""); //değer eklendikten sonra inputun içini boşaltıyoruz
+    } else if (value === "") {
+      toast.error("Değer eklemediniz!", {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
     }
   };
   const handleKeyPress = (e) => {
@@ -48,6 +91,16 @@ function App() {
     const newArr = todoArray.filter(
       (item) => item.id !== id
     ); /*todoArray silme işlemi için kullanılıyor, filter ile Array filtreleniyor seçtiğim id'yi kontrol ediyor silmek için filtreliyor eşleşmeyen todo'lar newArrye atanıyor kalan yani seçilen todoArray'de kalıyor ve siliniyor */
+    toast.success("Görevin Silindi", {
+      position: "top-right",
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+    });
 
     setTodoArray(newArr); //güncel Arrayyi set ediyoruz
   };
@@ -67,21 +120,58 @@ function App() {
     setTodoArray((item) =>
       item.map((item) => (item.id === id ? { ...item, status } : item))
     );
+    if (status === "Resolved") {
+      toast.success("Tamamlandı", {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+    } else {
+      toast.error("Tamamlanmadı", {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+    }
   };
 
   return (
     <>
+      <ToastContainer
+        position="top-right"
+        autoClose={2000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
       <h1 className="text-2xl md:text-4xl  text-white text-center m-3">
         TODO LIST
       </h1>
       <div className="flex items-center justify-center">
-        <input
+        <textarea
+          cols={40}
+          rows={1}
           type="text"
           placeholder="Add todo..."
           value={value}
           onChange={(e) => setValue(e.target.value)}
           onKeyDown={handleKeyPress}
-          className="border-2 p-4 outline-none rounded-2xl w-44 md:w-80 h-8 md:h-12 text-lg md:text-2xl text-gray-600"
+          className="border-2 p-4 outline-none rounded-2xl  text-lg md:text-2xl text-gray-600"
         />
         <button
           onClick={add}
@@ -95,9 +185,8 @@ function App() {
           {todoArray.map((item) => (
             <li
               key={item.id}
-              className={`text-white flex items-center justify-between m-1  border-2 rounded-xl w-[315px] md:w-[700px]  ${
-                item.status === "Resolved" ? "bg-green-400" : ""
-              }`}
+              style={{ backgroundColor: item.backgroundColor }}
+              className={`text-white flex items-center justify-between m-1  border-2 rounded-xl w-[315px] md:w-[700px] `}
             >
               <p
                 className={`break-all m-1 text-lg md:text-3xl ${
