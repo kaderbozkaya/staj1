@@ -15,6 +15,7 @@ function App() {
   const [editMode, setEditMode] = useState(false); //düzenleme işlemi yaplıp yapılmadığını belirlemek için(add butonunu update veya add olarak değiştirmek için)
   const [editItemId, setEditItemId] = useState(); //düzenlenen todo'nun id'sini tutmak için
 
+  //her todo için random bir background rengi seçmek için kod
   const randomTodoColor = () => {
     const letters = "0123456789ABCDEF";
     let color = "#";
@@ -46,6 +47,7 @@ function App() {
           progress: undefined,
           theme: "colored",
         });
+
         //düzenleme modu false ise ekleme işlemi için add butonu aktiftir
       } else {
         const newItem = {
@@ -80,8 +82,8 @@ function App() {
       });
     }
   };
+  //enter'a basınca listeye todo eklesin diye
   const handleKeyPress = (e) => {
-    //enter'a basınca listeye todo eklesin diye
     if (e.key === "Enter") {
       add();
     }
@@ -91,6 +93,7 @@ function App() {
     const newArr = todoArray.filter(
       (item) => item.id !== id
     ); /*todoArray silme işlemi için kullanılıyor, filter ile Array filtreleniyor seçtiğim id'yi kontrol ediyor silmek için filtreliyor eşleşmeyen todo'lar newArrye atanıyor kalan yani seçilen todoArray'de kalıyor ve siliniyor */
+
     toast.success("Your task deleted!", {
       position: "top-right",
       autoClose: 2000,
@@ -112,7 +115,7 @@ function App() {
     setEditMode(true);
     setEditItemId(id);
   };
-  const itemstatus = (id) => {
+  const itemStatus = (id) => {
     let status =
       todoArray.filter((item) => item.id === id)[0].status === "Active" //seçtiğim todo Arraynin 0. yani ilk elemanı Active ise Resolved olarak değitiriyorum değilse Active olarak değiştiriyorum
         ? "Resolved"
@@ -160,8 +163,8 @@ function App() {
         theme="light"
       />
       <div className="flex items-center justify-center m-5 ">
-        <div className="border border-cyan-900 rounded-2xl bg-slate-400 shadow-xl shadow-black">
-          <h1 className="text-2xl md:text-4xl  text-blue-600 text-center m-3 pt-4 ">
+        <div className="border border-cyan-900 rounded-2xl bg-slate-400 shadow-xl shadow-slate-700 ">
+          <h1 className="text-3xl md:text-5xl  text-blue-700 text-center m-3 pt-4 ">
             TODO LIST
           </h1>
           <div className="flex items-center justify-center">
@@ -171,11 +174,11 @@ function App() {
               value={value}
               onChange={(e) => setValue(e.target.value)}
               onKeyDown={handleKeyPress}
-              className="border-2 p-3 outline-none rounded-xl text-md md:text-2xl text-gray-600 m-3 resize-none w-56 h-12  md:w-80 md:h-20"
+              className="border-2 p-3 outline-none rounded-xl text-md md:text-2xl text-gray-600 resize-none w-[56%] h-14 md:w-[70%] md:h-16 m-3"
             />
             <button
               onClick={add}
-              className="bg-blue-500 text-white text-lg md:text-2xl m-2 p-4 rounded-2xl w-12 md:w-28 h-12 md:h-20 hover:bg-blue-400 flex items-center justify-center"
+              className="bg-blue-500 text-white text-lg md:text-2xl m-2 p-4 rounded-2xl w-16 md:w-28 h-14 md:h-16 hover:bg-blue-400 flex items-center justify-center"
             >
               {editMode ? "Update" : "Add"}
             </button>
@@ -186,7 +189,7 @@ function App() {
                 <li
                   key={item.id}
                   style={{ backgroundColor: item.backgroundColor }}
-                  className={`text-gray-300 flex items-center justify-between m-1  border-2 rounded-xl w-[300px] md:w-[600px] pt-4`}
+                  className={`text-gray-300 flex items-center justify-between m-1 border-2 rounded-xl w-[300px] md:w-[600px] p-2`}
                 >
                   <p
                     className={`break-all m-1 text-lg md:text-3xl ${
@@ -200,6 +203,8 @@ function App() {
                       className="cursor-pointer text-lg md:text-3xl"
                       onClick={() => deleteItem(item.id)}
                     />
+
+                    {/*üzeri çizilen yani tamamlanan bir todo üzerinde düzenleme işlemi yapılamasın diye */}
                     {item.status !== "Resolved" && (
                       <MdEdit
                         className="cursor-pointer text-lg md:text-3xl ml-1"
@@ -210,13 +215,13 @@ function App() {
                     {item.status === "Active" && (
                       <FaRegSquare
                         className="cursor-pointer text-lg md:text-3xl ml-1"
-                        onClick={() => itemstatus(item.id)}
+                        onClick={() => itemStatus(item.id)}
                       />
                     )}
                     {item.status === "Resolved" && (
                       <FaRegSquareCheck
                         className="cursor-pointer text-lg md:text-3xl ml-1"
-                        onClick={() => itemstatus(item.id)}
+                        onClick={() => itemStatus(item.id)}
                       />
                     )}
                   </span>
