@@ -3,7 +3,11 @@
 @tailwind utilities;
 
 body {
-background-color: rgb(162, 210, 210);
+
 font-family: "Poppins", sans-serif;
    
+}
+.dark {
+    background-color: rgb(8, 64, 92);
+    color: beige;   
 }

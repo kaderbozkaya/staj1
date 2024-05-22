@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaTrashAlt } from "react-icons/fa";
 import { MdEdit } from "react-icons/md";
 import { v4 as uuidv4 } from "uuid"; //id değerleri için npm uuid'den indirilen paket
@@ -7,6 +7,11 @@ import { FaRegSquareCheck } from "react-icons/fa6";
 //--toastify---
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+
+//--mode icons
+import { IoSunnyOutline } from "react-icons/io5";
+import { FiMoon } from "react-icons/fi";
+
 import "./App.css";
 
 function App() {
@@ -14,6 +19,14 @@ function App() {
   const [todoArray, setTodoArray] = useState([]);
   const [editMode, setEditMode] = useState(false); //düzenleme işlemi yaplıp yapılmadığını belirlemek için(add butonunu update veya add olarak değiştirmek için)
   const [editItemId, setEditItemId] = useState(); //düzenlenen todo'nun id'sini tutmak için
+  const [isDarkMode, setIsDarkMode] = useState(false);
+  useEffect(() => {
+    if (isDarkMode) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+  }, [isDarkMode]);
 
   //her todo için random bir background rengi seçmek için kod
   const randomTodoColor = () => {
@@ -147,9 +160,19 @@ function App() {
       });
     }
   };
-
+  const tooggleTheme = () => {
+    setIsDarkMode(!isDarkMode);
+  };
   return (
     <>
+      <div className="flex justify-end p-7 m-4">
+        <button
+          onClick={tooggleTheme}
+          className="p-4 bg-blue-500 dark:bg-white rounded-full text-white dark:text-blue-500 md:w-16 md:h-16 flex items-center justify-center text-lg md:text-3xl"
+        >
+          {isDarkMode ? <IoSunnyOutline /> : <FiMoon />}
+        </button>
+      </div>
       <ToastContainer
         position="top-right"
         autoClose={2000}
@@ -163,8 +186,8 @@ function App() {
         theme="light"
       />
       <div className="flex items-center justify-center m-5 ">
-        <div className="border border-cyan-900 rounded-2xl bg-slate-400 shadow-xl shadow-slate-700 ">
-          <h1 className="text-3xl md:text-5xl  text-blue-700 text-center m-3 pt-4 ">
+        <div className="border border-cyan-900 rounded-2xl bg-slate-500 shadow-xl shadow-slate-800 dark:border-white dark:bg-slate-300 dark:shadow-xl dark:shadow-slate-500 ">
+          <h1 className="text-3xl md:text-5xl text-white dark:text-blue-700 text-center m-3 pt-4 ">
             TODO LIST
           </h1>
           <div className="flex items-center justify-center">
@@ -174,7 +197,7 @@ function App() {
               value={value}
               onChange={(e) => setValue(e.target.value)}
               onKeyDown={handleKeyPress}
-              className="border-2 p-3 outline-none rounded-xl text-md md:text-2xl text-gray-600 resize-none w-[56%] h-14 md:w-[70%] md:h-16 m-3"
+              className="border-2 p-3 outline-none rounded-xl text-md md:text-2xl text-gray-600 resize-none w-[56%] h-14 md:w-[70%] md:h-16 m-3 dark:border-blue-500"
             />
             <button
               onClick={add}
@@ -184,12 +207,12 @@ function App() {
             </button>
           </div>
           <div className="flex items-center justify-center">
-            <ul className="m-5 p-3 rounded break-words flex flex-col items-center justify-center ">
+            <ul className="m-5 p-3 rounded break-words flex  justify-center flex-wrap">
               {todoArray.map((item) => (
                 <li
                   key={item.id}
                   style={{ backgroundColor: item.backgroundColor }}
-                  className={`text-gray-300 flex items-center justify-between m-1 border-2 rounded-xl w-[300px] md:w-[600px] p-2`}
+                  className={`text-gray-300 flex items-center m-1 border-2 rounded-xl w-[300px] lg:w-1/4 p-4`}
                 >
                   <p
                     className={`break-all m-1 text-lg md:text-3xl ${
