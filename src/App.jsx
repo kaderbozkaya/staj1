@@ -16,10 +16,18 @@ import "./App.css";
 
 function App() {
   const [value, setValue] = useState("");
-  const [todoArray, setTodoArray] = useState([]);
+  const [todoArray, setTodoArray] = useState(() => {
+    // İlk render sırasında local storage'dan verileri yükle
+    const savedTodos = localStorage.getItem("todo-list");
+    return savedTodos ? JSON.parse(savedTodos) : [];
+  });
   const [editMode, setEditMode] = useState(false); //düzenleme işlemi yaplıp yapılmadığını belirlemek için(add butonunu update veya add olarak değiştirmek için)
   const [editItemId, setEditItemId] = useState(); //düzenlenen todo'nun id'sini tutmak için
   const [isDarkMode, setIsDarkMode] = useState(false);
+  useEffect(() => {
+    // Todos değiştiğinde local storage'a kaydet
+    localStorage.setItem("todo-list", JSON.stringify(todoArray));
+  }, [todoArray]);
   useEffect(() => {
     if (isDarkMode) {
       document.documentElement.classList.add("dark");
@@ -95,12 +103,7 @@ function App() {
       });
     }
   };
-  //enter'a basınca listeye todo eklesin diye
-  const handleKeyPress = (e) => {
-    if (e.key === "Enter") {
-      add();
-    }
-  };
+
   //---------------SİLME İÇİN GEREKLİ FONKSİYONLAR----------------
   const deleteItem = (id) => {
     const newArr = todoArray.filter(
@@ -165,10 +168,10 @@ function App() {
   };
   return (
     <>
-      <div className="flex justify-end p-7 m-4">
+      <div className="flex mt-20 ml-2 md:m-5">
         <button
           onClick={tooggleTheme}
-          className="p-4 bg-blue-500 dark:bg-white rounded-full text-white dark:text-blue-500 md:w-16 md:h-16 flex items-center justify-center text-lg md:text-3xl"
+          className="p-4 bg-blue-500 dark:bg-white rounded-full text-white dark:text-blue-500 md:w-16 md:h-16 flex items-center justify-center text-lg md:text-3xl "
         >
           {isDarkMode ? <IoSunnyOutline /> : <FiMoon />}
         </button>
@@ -185,37 +188,36 @@ function App() {
         pauseOnHover
         theme="light"
       />
-      <div className="flex items-center justify-center m-5 ">
-        <div className="border border-cyan-900 rounded-2xl bg-slate-500 shadow-xl shadow-slate-800 dark:border-white dark:bg-slate-300 dark:shadow-xl dark:shadow-slate-500 ">
+      <div className=" flex justify-center items-center ">
+        <div className="m-5 p-8 border border-cyan-900 rounded-2xl bg-slate-500 shadow-xl shadow-slate-800 dark:border-white dark:bg-slate-300 dark:shadow-xl dark:shadow-slate-500 w-[300px] md:w-[700px] lg:w-full">
           <h1 className="text-3xl md:text-5xl text-white dark:text-blue-700 text-center m-3 pt-4 ">
             TODO LIST
           </h1>
-          <div className="flex items-center justify-center">
+          <div className="flex items-center justify-center ">
             <textarea
               type="text"
               placeholder="Add todo..."
               value={value}
               onChange={(e) => setValue(e.target.value)}
-              onKeyDown={handleKeyPress}
-              className="border-2 p-3 outline-none rounded-xl text-md md:text-2xl text-gray-600 resize-none w-[56%] h-14 md:w-[70%] md:h-16 m-3 dark:border-blue-500"
+              className="border-2 p-4 outline-none rounded-xl text-md md:text-2xl text-gray-600 resize-none  md:w-full h-16 md:h-[80px] m-3  dark:border-blue-500 "
             />
             <button
               onClick={add}
-              className="bg-blue-500 text-white text-lg md:text-2xl m-2 p-4 rounded-2xl w-16 md:w-28 h-14 md:h-16 hover:bg-blue-400 flex items-center justify-center"
+              className="bg-blue-500 text-white text-lg md:text-2xl  p-3 rounded-2xl w-16 md:w-28 h-16 md:h-[80px] hover:bg-blue-400 flex items-center justify-center"
             >
               {editMode ? "Update" : "Add"}
             </button>
           </div>
-          <div className="flex items-center justify-center">
-            <ul className="m-5 p-3 rounded break-words flex  justify-center flex-wrap">
+          <div>
+            <ul className="rounded break-words flex flex-wrap justify-center ">
               {todoArray.map((item) => (
                 <li
                   key={item.id}
                   style={{ backgroundColor: item.backgroundColor }}
-                  className={`text-gray-300 flex items-center m-1 border-2 rounded-xl w-[300px] lg:w-1/4 p-4`}
+                  className={`text-gray-300 flex items-center m-1 border-2 rounded-xl w-[300px] lg:w-1/4 p-1 max-h-full`}
                 >
                   <p
-                    className={`break-all m-1 text-lg md:text-3xl ${
+                    className={`m-1 text-lg md:text-3xl break-all ${
                       item.status === "Resolved" ? "line-through" : ""
                     }`}
                   >
