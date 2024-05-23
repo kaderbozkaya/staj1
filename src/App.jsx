@@ -12,8 +12,6 @@ import "react-toastify/dist/ReactToastify.css";
 import { IoSunnyOutline } from "react-icons/io5";
 import { FiMoon } from "react-icons/fi";
 
-import "./App.css";
-
 function App() {
   const [value, setValue] = useState("");
   const [todoArray, setTodoArray] = useState(() => {
@@ -189,7 +187,7 @@ function App() {
         theme="light"
       />
       <div className=" flex justify-center items-center ">
-        <div className="m-5 p-8 border border-cyan-900 rounded-2xl bg-slate-500 shadow-xl shadow-slate-800 dark:border-white dark:bg-slate-300 dark:shadow-xl dark:shadow-slate-500 w-[300px] md:w-[700px] lg:w-full">
+        <div className="m-5 p-8 border border-cyan-900 rounded-2xl bg-slate-500 shadow-xl shadow-slate-800 dark:border-white dark:bg-slate-300 dark:shadow-xl dark:shadow-slate-500 w-[300px] md:w-[700px] lg:w-[900px]">
           <h1 className="text-3xl md:text-5xl text-white dark:text-blue-700 text-center m-3 pt-4 ">
             TODO LIST
           </h1>
