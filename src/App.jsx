@@ -199,25 +199,25 @@ function App() {
               placeholder="Add todo..."
               value={value}
               onChange={(e) => setValue(e.target.value)}
-              className="border-2 p-4 outline-none rounded-xl text-md md:text-2xl text-gray-600 resize-none  md:w-full h-16 md:h-[80px] m-3  dark:border-blue-500 "
+              className="border-2 p-1 outline-none rounded-xl text-md md:text-2xl text-gray-600 resize-none  md:w-full h-16 md:h-[80px] m-2 dark:border-blue-400 "
             />
             <button
               onClick={add}
-              className="bg-blue-500 text-white text-lg md:text-2xl  p-3 rounded-2xl w-16 md:w-28 h-16 md:h-[80px] hover:bg-blue-400 flex items-center justify-center"
+              className="bg-[#2d2d6e] text-white text-lg md:text-2xl  p-3 rounded-xl w-16 md:w-28 h-16 md:h-[80px] hover:bg-[#0f0f5b] flex items-center justify-center dark:bg-[#4a4ad1] dark:hover:bg-[#000068]"
             >
               {editMode ? "Update" : "Add"}
             </button>
           </div>
           <div>
-            <ul className="rounded break-words flex flex-wrap justify-center ">
+            <ul className="rounded break-words flex flex-wrap ">
               {todoArray.map((item) => (
                 <li
                   key={item.id}
                   style={{ backgroundColor: item.backgroundColor }}
-                  className={`text-gray-300 flex items-center m-1 border-2 rounded-xl w-[300px] lg:w-1/4 p-1 max-h-full`}
+                  className={`text-gray-300 flex  m-1 border-2 rounded-xl w-[300px]  lg:w-[32%] p-1 justify-between `}
                 >
                   <p
-                    className={`m-1 text-lg md:text-3xl break-all ${
+                    className={`m-1 text-lg md:text-3x] break-all ${
                       item.status === "Resolved" ? "line-through" : ""
                     }`}
                   >
